@@ -104,8 +104,11 @@ class socket:
         global partnerPublicKey
         opt_flag = 0x0
         address = args[0]
-        encrypt = args[1]
-
+        encrypt = None
+        if len(args) > 1:
+            print "Tuple size is big fam"
+            encrypt = args[1]
+            
         # When the destination is localhost we use the udpPortTX as the destination port for our message
         if address[0] == "localhost":
             address = ('127.0.0.1', transmitPortNo)
