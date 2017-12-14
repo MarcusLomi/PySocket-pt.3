@@ -51,6 +51,7 @@ privateKeys = {}
 ENCRYPT = 236
 
 globalbuff = ""
+currentWindow = 32000
 
 # FLAGS
 SOCK352_SYN = 0x01
@@ -250,6 +251,7 @@ class socket:
                 data, addr = udpSocket.recvfrom(8272)   # This can stay the same
                 headerDat = struct.unpack(sock352PktHdrData, data)  # receive the incoming header data from the client
                 print "\tACK received:", headerDat[9]  # check the SYN flag in the header
+                print "Client has window size of:", headerDat[10]
                 while headerDat[9] != self.startSeqNo:  # If we get back an incorrect ack
                     print "Bad ACK received"
                     udpSocket.sendto(h.data, self.partnerAddress)  # Resend the packet and let the loop go again
@@ -276,17 +278,21 @@ class socket:
         print "Receiving data..."
         print "Trying to receive:", nbytes
         global socketBox
-        global globalbuff
+        global globalbuff, currentWindow
 
-        if len(globalbuff) > 0:
-            print "Reading:", nbytes, "from global buffer of current size", len(globalbuff)
+        returnDat = ""  # message that gets returned
 
-            # don't receive until it's read.
-            # on client side go in perpetual recv loop until the window size is what's needed
-            # send ack for every bit that's read.  possibly.
-
-        else:
-            print "Buffer is empty waiting for packets."
+        # while nbytes > 0:
+        #     if len(globalbuff) >= nbytes:
+        #         returnDat += globalbuff[:nbytes]    # Grab the data
+        #         globalbuff = globalbuff[nbytes:]    # Move the buffer
+        #         currentWindow += nbytes
+        #     # don't receive until it's read.
+        #     # on client side go in perpetual recv loop until the window size is what's needed
+        #     # send ack for every bit that's read.  possibly.
+        #     else:
+        #         newpacket = self.getPacket()
+        #         print "Buffer is empty waiting for packets."
 
         newpacket = self.getPacket()  # go poll for new packets and return them
         while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
@@ -303,14 +309,13 @@ class socket:
         else:  # It's a regular packet
             bytesreceived = newpacket.payload
 
-        globalbuff += newpacket.payload
         print "Testing adding to global buffer length", len(globalbuff)
 
         return bytesreceived
 
     def getPacket(self):
         print "Waiting for incoming packets..."
-
+        global globalbuff, currentWindow
         # This method will act as an abstraction layer for retrieving a packet from the sender
         packetData, addr = udpSocket.recvfrom(8272)  # Get the packet data
         rawheader = packetData[0:40]  # Isolate the header
@@ -373,10 +378,16 @@ class socket:
             p.payload = packetData[40:]  # Set the payload to the raw data minus the header data
             h = header(0, SOCK352_ACK, self.startSeqNo,
                        opt_flag)  # Create a new header of payload zero as our acknowledgment
-            h.setack_no(receivedheader[8])  # The acknowledgement number is the sequence number we got
+            h.setack_no(receivedheader[8])      # The acknowledgement number is the sequence number we got
+            globalbuff += p.payload             # put the payload in the buffer
+
+            currentWindow -= len(p.payload)     # get the new window size
+            h.set_window(currentWindow)         # set the new window
+            print"SENDING WINDOW OF",currentWindow
             udpSocket.sendto(h.data, self.partnerAddress)  # Send over the acknowledgement
             print "\tSent acknowledgement for packet no:", receivedheader[8]
             print "Received packet payload size:", receivedheader[11]
+
             return p
         else:
             print "Corrupted packet"
