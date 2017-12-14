@@ -49,7 +49,7 @@ privateKeys = {}
 
 # this is 0xEC
 ENCRYPT = 236
-global globalbuff
+
 globalbuff = ""
 
 # FLAGS
@@ -276,6 +276,18 @@ class socket:
         print "Receiving data..."
         print "Trying to receive:", nbytes
         global socketBox
+        global globalbuff
+
+        if len(globalbuff) > 0:
+            print "Reading:", nbytes, "from global buffer of current size", len(globalbuff)
+
+            # don't receive until it's read.
+            # on client side go in perpetual recv loop until the window size is what's needed
+            # send ack for every bit that's read.  possibly.
+
+        else:
+            print "Buffer is empty waiting for packets."
+
         newpacket = self.getPacket()  # go poll for new packets and return them
         while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
             print "Didn't get the expected sequence number which is,", self.nextSeqNo
@@ -290,6 +302,9 @@ class socket:
             bytesreceived = socketBox.decrypt(newpacket.payload)
         else:  # It's a regular packet
             bytesreceived = newpacket.payload
+
+        globalbuff += newpacket.payload
+        print "Testing adding to global buffer length", len(globalbuff)
 
         return bytesreceived
 
@@ -366,7 +381,6 @@ class socket:
         else:
             print "Corrupted packet"
             return None  # Returning None will trigger a repeated method call in recv()
-
         pass
 
 
