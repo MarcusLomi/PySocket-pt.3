@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="721fef4c-67ca-44a8-a655-ecc415119674" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/send.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/send2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recv.txt" afterPath="$PROJECT_DIR$/recv.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/send.txt" afterPath="$PROJECT_DIR$/send.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sock352.py" afterPath="$PROJECT_DIR$/sock352.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,8 +16,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PySocket_pt_3$server3.coverage" NAME="server3 Coverage Results" MODIFIED="1513275491328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PySocket_pt_3$client3.coverage" NAME="client3 Coverage Results" MODIFIED="1513275497881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PySocket_pt_3$server3.coverage" NAME="server3 Coverage Results" MODIFIED="1513278226529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PySocket_pt_3$client3.coverage" NAME="client3 Coverage Results" MODIFIED="1513278249027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PySocket_pt_3$sock352.coverage" NAME="sock352 Coverage Results" MODIFIED="1512741406065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
@@ -23,8 +25,8 @@
       <file leaf-file-name="sock352.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sock352.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="253" column="64" lean-forward="false" selection-start-line="253" selection-start-column="64" selection-end-line="253" selection-end-column="64" />
+            <state relative-caret-position="84">
+              <caret line="288" column="35" lean-forward="true" selection-start-line="288" selection-start-column="35" selection-end-line="288" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -65,7 +67,7 @@
       <file leaf-file-name="recv.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/recv.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-126">
+            <state relative-caret-position="-11988">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -75,8 +77,18 @@
       <file leaf-file-name="send.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/send.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="669">
+            <state relative-caret-position="444">
               <caret line="592" column="32" lean-forward="false" selection-start-line="592" selection-start-column="32" selection-end-line="592" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="send2.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/send2.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="5313" column="32" lean-forward="true" selection-start-line="5313" selection-start-column="32" selection-end-line="5313" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -100,6 +112,7 @@
       <find>GETPACKET(S</find>
       <find>send</find>
       <find>window</find>
+      <find>send(s</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -111,6 +124,7 @@
         <option value="$PROJECT_DIR$/send" />
         <option value="$PROJECT_DIR$/send.txt" />
         <option value="$PROJECT_DIR$/sock352.py" />
+        <option value="$PROJECT_DIR$/send2.txt" />
       </list>
     </option>
   </component>
@@ -121,8 +135,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="392" />
-    <option name="y" value="-10" />
+    <option name="x" value="120" />
+    <option name="y" value="113" />
     <option name="width" value="976" />
     <option name="height" value="1038" />
   </component>
@@ -167,6 +181,9 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\marca\Desktop\PySocket-pt.3" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\marca\Desktop\PySocket-pt.3" />
     </key>
@@ -183,7 +200,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.server3">
+  <component name="RunManager" selected="Python.client3">
     <configuration name="client3" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -198,7 +215,7 @@
       <module name="PySocket-pt.3" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/client3.py" />
-      <option name="PARAMETERS" value="-d localhost -f send.txt -u 9999 -v 8888" />
+      <option name="PARAMETERS" value="-d localhost -f send.jpg -u 9999 -v 8888" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
@@ -216,7 +233,7 @@
       <module name="PySocket-pt.3" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server3.py" />
-      <option name="PARAMETERS" value="-f recv.txt -u 8888 -v 9999" />
+      <option name="PARAMETERS" value="-f recv.jpg -u 8888 -v 9999" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
@@ -269,16 +286,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47368422" sideWeight="0.40850642" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3178733" sideWeight="0.59149355" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3178733" sideWeight="0.59149355" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973147" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23642534" sideWeight="0.49570355" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -404,26 +420,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/send" />
-    <entry file="file://$PROJECT_DIR$/recv.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-126">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Part 2/client2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="557">
           <caret line="69" column="33" lean-forward="false" selection-start-line="69" selection-start-column="26" selection-end-line="69" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/send.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="669">
-          <caret line="592" column="32" lean-forward="false" selection-start-line="592" selection-start-column="32" selection-end-line="592" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -446,10 +446,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/recv.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-11988">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/send.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="592" column="32" lean-forward="false" selection-start-line="592" selection-start-column="32" selection-end-line="592" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/send2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="5313" column="32" lean-forward="true" selection-start-line="5313" selection-start-column="32" selection-end-line="5313" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/sock352.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="253" column="64" lean-forward="false" selection-start-line="253" selection-start-column="64" selection-end-line="253" selection-end-column="64" />
+        <state relative-caret-position="84">
+          <caret line="288" column="35" lean-forward="true" selection-start-line="288" selection-start-column="35" selection-end-line="288" selection-end-column="35" />
           <folding />
         </state>
       </provider>

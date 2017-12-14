@@ -281,33 +281,47 @@ class socket:
         global globalbuff, currentWindow
 
         returnDat = ""  # message that gets returned
+        ###################################################################
+        # In its current form, the client exhausts the buffer before getting more packets.
+        # TODO: need to implement controls for when client reads larger than whats in the buffer.
+        while nbytes > 0:
+            if len(globalbuff) >= nbytes:
+                returnDat += globalbuff[:nbytes]    # Grab the data
+                globalbuff = globalbuff[nbytes:]    # Move the buffer
+                currentWindow += nbytes
+                # self.getPacket()          # Commented out because we dont' have controls for whe we'd receive something over buffer size
+                # The line above would be put back in when we add in controls for then we get a packet larger than the buffer
+                self.nextSeqNo += 1
+                return returnDat
+            # don't receive until it's read.
+            # on client side go in perpetual recv loop until the window size is what's needed
+            # send ack for every bit that's read.  possibly.
+            else:
+                print "Buffer is empty waiting for packets."
+                newpacket = self.getPacket()
+                print "Got new Data"
+                returnDat += globalbuff[:nbytes]  # Grab the data
+                globalbuff = globalbuff[nbytes:]  # Change the buffer
+                currentWindow += nbytes
+                self.nextSeqNo += 1
+                return returnDat
+            ##################################################################
+            '''Youre good after this line'''
 
-        # while nbytes > 0:
-        #     if len(globalbuff) >= nbytes:
-        #         returnDat += globalbuff[:nbytes]    # Grab the data
-        #         globalbuff = globalbuff[nbytes:]    # Move the buffer
-        #         currentWindow += nbytes
-        #     # don't receive until it's read.
-        #     # on client side go in perpetual recv loop until the window size is what's needed
-        #     # send ack for every bit that's read.  possibly.
-        #     else:
-        #         newpacket = self.getPacket()
-        #         print "Buffer is empty waiting for packets."
-
-        newpacket = self.getPacket()  # go poll for new packets and return them
-        while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
-            print "Didn't get the expected sequence number which is,", self.nextSeqNo
-            newpacket = self.getPacket()
-        while newpacket is None:  # While get packet keeps returning None, keep waiting for new packets.
-            # Client will always send new ones
-            newpacket = self.getPacket()  # got a bad packet, trying to get a new one
-        print "Packet Received"
-        self.nextSeqNo += 1
-        # print "Payload size is:", newpacket.packetHeader[11], "nybytes is:", nbytes
-        if newpacket.packetHeader[2] == 0x1:  # If the packet was encrypted we decrypt it here
-            bytesreceived = socketBox.decrypt(newpacket.payload)
-        else:  # It's a regular packet
-            bytesreceived = newpacket.payload
+            newpacket = self.getPacket()  # go poll for new packets and return them
+            while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
+                print "Didn't get the expected sequence number which is,", self.nextSeqNo
+                newpacket = self.getPacket()
+            while newpacket is None:  # While get packet keeps returning None, keep waiting for new packets.
+                # Client will always send new ones
+                newpacket = self.getPacket()  # got a bad packet, trying to get a new one
+            print "Packet Received"
+            self.nextSeqNo += 1
+            # print "Payload size is:", newpacket.packetHeader[11], "nybytes is:", nbytes
+            if newpacket.packetHeader[2] == 0x1:  # If the packet was encrypted we decrypt it here
+                bytesreceived = socketBox.decrypt(newpacket.payload)
+            else:  # It's a regular packet
+                bytesreceived = newpacket.payload
 
         print "Testing adding to global buffer length", len(globalbuff)
 
