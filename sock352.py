@@ -282,20 +282,14 @@ class socket:
 
         returnDat = ""  # message that gets returned
         ###################################################################
-        # In its current form, the client exhausts the buffer before getting more packets.
-        # TODO: need to implement controls for when client reads larger than whats in the buffer.
+
         while nbytes > 0:
-            if len(globalbuff) >= nbytes:
+            if nbytes <= len(globalbuff):
                 returnDat += globalbuff[:nbytes]    # Grab the data
                 globalbuff = globalbuff[nbytes:]    # Move the buffer
                 currentWindow += nbytes
-                # self.getPacket()          # Commented out because we dont' have controls for whe we'd receive something over buffer size
-                # The line above would be put back in when we add in controls for then we get a packet larger than the buffer
                 self.nextSeqNo += 1
                 return returnDat
-            # don't receive until it's read.
-            # on client side go in perpetual recv loop until the window size is what's needed
-            # send ack for every bit that's read.  possibly.
             else:
                 print "Buffer is empty waiting for packets."
                 newpacket = self.getPacket()
@@ -305,8 +299,8 @@ class socket:
                 currentWindow += nbytes
                 self.nextSeqNo += 1
                 return returnDat
+
             ##################################################################
-            '''Youre good after this line'''
 
             newpacket = self.getPacket()  # go poll for new packets and return them
             while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
@@ -393,8 +387,11 @@ class socket:
             h = header(0, SOCK352_ACK, self.startSeqNo,
                        opt_flag)  # Create a new header of payload zero as our acknowledgment
             h.setack_no(receivedheader[8])      # The acknowledgement number is the sequence number we got
-            globalbuff += p.payload             # put the payload in the buffer
 
+            if receivedheader[2] == 0x1:  # If the packet was encrypted we decrypt it here
+                globalbuff += socketBox.decrypt(p.payload)
+            else:
+                globalbuff += p.payload             # put the payload in the buffer
             currentWindow -= len(p.payload)     # get the new window size
             h.set_window(currentWindow)         # set the new window
             print"SENDING WINDOW OF",currentWindow
