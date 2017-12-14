@@ -251,7 +251,7 @@ class socket:
                 data, addr = udpSocket.recvfrom(8272)   # This can stay the same
                 headerDat = struct.unpack(sock352PktHdrData, data)  # receive the incoming header data from the client
                 print "\tACK received:", headerDat[9]  # check the SYN flag in the header
-                print "Client has window size of:", headerDat[10]
+                #print "Client has window size of:", headerDat[10]
                 while headerDat[9] != self.startSeqNo:  # If we get back an incorrect ack
                     print "Bad ACK received"
                     udpSocket.sendto(h.data, self.partnerAddress)  # Resend the packet and let the loop go again
@@ -281,7 +281,6 @@ class socket:
         global globalbuff, currentWindow
 
         returnDat = ""  # message that gets returned
-        ###################################################################
 
         while nbytes > 0:
             if nbytes <= len(globalbuff):
@@ -304,8 +303,6 @@ class socket:
                 currentWindow += nbytes
                 self.nextSeqNo += 1
                 return returnDat
-
-            ##################################################################
 
             newpacket = self.getPacket()  # go poll for new packets and return them
             while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
@@ -400,7 +397,7 @@ class socket:
                 globalbuff += p.payload             # put the payload in the buffer
                 currentWindow -= len(p.payload)     # get the new window size
             h.set_window(currentWindow)         # set the new window
-            print"SENDING WINDOW OF",currentWindow
+            #print"SENDING WINDOW OF",currentWindow
             udpSocket.sendto(h.data, self.partnerAddress)  # Send over the acknowledgement
             print "\tSent acknowledgement for packet no:", receivedheader[8]
             print "Received packet payload size:", receivedheader[11]
