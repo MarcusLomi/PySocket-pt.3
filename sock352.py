@@ -229,7 +229,6 @@ class socket:
 
     def send(self, buffer):
 
-        print "Sending data..."
         global socketBox
         if self.encryption:
             nonce = nacl.utils.random(Box.NONCE_SIZE)  # Create the nonce
@@ -289,7 +288,6 @@ class socket:
                 returnDat += globalbuff[:nbytes]    # Grab the data
                 globalbuff = globalbuff[nbytes:]    # Move the buffer
                 currentWindow += nbytes
-                #self.nextSeqNo += 1     #Get rid of this if error
                 return returnDat
             else:
                 print "Buffer is empty waiting for packets."
