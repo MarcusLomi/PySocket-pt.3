@@ -228,6 +228,7 @@ class socket:
         return
 
     def send(self, buffer):
+
         print "Sending data..."
         global socketBox
         if self.encryption:
@@ -288,11 +289,17 @@ class socket:
                 returnDat += globalbuff[:nbytes]    # Grab the data
                 globalbuff = globalbuff[nbytes:]    # Move the buffer
                 currentWindow += nbytes
-                self.nextSeqNo += 1
+                #self.nextSeqNo += 1     #Get rid of this if error
                 return returnDat
             else:
                 print "Buffer is empty waiting for packets."
                 newpacket = self.getPacket()
+                while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
+                    print "Didn't get the expected sequence number which is,", self.nextSeqNo
+                    newpacket = self.getPacket()
+                while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
+                    print "Didn't get the expected sequence number which is,", self.nextSeqNo
+                    newpacket = self.getPacket()
                 print "Got new Data"
                 returnDat += globalbuff[:nbytes]  # Grab the data
                 globalbuff = globalbuff[nbytes:]  # Change the buffer
