@@ -49,6 +49,7 @@ privateKeys = {}
 
 # this is 0xEC
 ENCRYPT = 236
+global globalbuff
 globalbuff = ""
 
 # FLAGS
@@ -61,6 +62,7 @@ SOCK352_HAS_OPT = 0xA0
 sock352PktHdrData = "!BBBBHHLLQQLL"  # Setting up the packet header data for the socket
 udpPkt_hdr_data = struct.Struct(sock352PktHdrData)
 
+
 def init(UDPportTx, UDPportRx):  # initialize your UDP socket here
 
     global udpSocket
@@ -72,7 +74,7 @@ def init(UDPportTx, UDPportRx):  # initialize your UDP socket here
 
     udpSocket = syssock.socket(syssock.AF_INET, syssock.SOCK_DGRAM)
     udpSocket.setsockopt(syssock.SOL_SOCKET, syssock.SO_REUSEADDR, 1)
-    udpSocket.bind(('',int(UDPportRx)))  # using the global udpSocket to bind to the address
+    udpSocket.bind(('', int(UDPportRx)))  # using the global udpSocket to bind to the address
     print "Successfully bound to", UDPportRx
 
     if udpSocket is None:
@@ -87,13 +89,13 @@ class socket:
     address = ""  # Need to figure out if this is address of buddy or self
 
     def __init__(self):  # fill in your code here
-        self.startSeqNo = None      # Current sequence number
+        self.startSeqNo = None  # Current sequence number
         self.nextSeqNo = None
-        self.expectedAck = None     # Expected acknowledgement no USED ONLY IN SYN DURING ACCEPT/CONNECT
-        self.currentAck = None      # Current outgoing acknowledgement USED ONLY DURING ACCEPT/CONNECT
+        self.expectedAck = None  # Expected acknowledgement no USED ONLY IN SYN DURING ACCEPT/CONNECT
+        self.currentAck = None  # Current outgoing acknowledgement USED ONLY DURING ACCEPT/CONNECT
         self.connected = False
         self.partnerAddress = None  # Saved copy of partner's address
-        self.encryption = False     # Saves whether or not the connection is encrypted
+        self.encryption = False  # Saves whether or not the connection is encrypted
         return
 
     def bind(self, address):
@@ -109,11 +111,11 @@ class socket:
         if len(args) > 1:
             print "Tuple size is big fam"
             encrypt = args[1]
-            
+
         # When the destination is localhost we use the udpPortTX as the destination port for our message
         if address[0] == "localhost":
             address = ('127.0.0.1', transmitPortNo)
-        else: # Keep the IP address specified by the user, just use UDPportTX
+        else:  # Keep the IP address specified by the user, just use UDPportTX
             adr = address[0]
             address = (adr, transmitPortNo)
 
@@ -158,13 +160,14 @@ class socket:
         if self.encryption:
             for pubAddr in publicKeys:
                 # Print pubAddr
-                if pubAddr[0] == self.partnerAddress[0] and (pubAddr[1] == "*" or int(pubAddr[1]) == self.partnerAddress[1]):
+                if pubAddr[0] == self.partnerAddress[0] and (
+                        pubAddr[1] == "*" or int(pubAddr[1]) == self.partnerAddress[1]):
                     print "Partner public Key set"
                     partnerPublicKey = publicKeys[pubAddr]
-            if partnerPublicKey is None or partnerPublicKey == -1:  #This means that the partner public key isn't set. We'll assume its the default
+            if partnerPublicKey is None or partnerPublicKey == -1:  # This means that the partner public key isn't set. We'll assume its the default
                 print "Had to resort to default public key"
-                partnerPublicKey = hostPublicKey    # This is useful for connections from iLab to personal computer
-            socketBox = Box(hostPrivateKey , partnerPublicKey)
+                partnerPublicKey = hostPublicKey  # This is useful for connections from iLab to personal computer
+            socketBox = Box(hostPrivateKey, partnerPublicKey)
 
         return
 
@@ -186,12 +189,13 @@ class socket:
         if self.encryption:
             for pubAddr in publicKeys:
                 print "Checking value for", pubAddr
-                if pubAddr[0] == self.partnerAddress[0] and (int(pubAddr[1]) == self.partnerAddress[1] or pubAddr[1] == "*"):
+                if pubAddr[0] == self.partnerAddress[0] and (
+                        int(pubAddr[1]) == self.partnerAddress[1] or pubAddr[1] == "*"):
                     partnerPublicKey = publicKeys[pubAddr]
                     print "Partner public Key set"
             if partnerPublicKey is None or partnerPublicKey == -1:  # This means that the partner public key isn't set. We'll assume its the default
                 partnerPublicKey = hostPublicKey
-            socketBox = Box(hostPrivateKey,partnerPublicKey)
+            socketBox = Box(hostPrivateKey, partnerPublicKey)
         print "Socketbox successfully created"
 
         (clientsocket, address) = (self, self.partnerAddress)
@@ -225,18 +229,17 @@ class socket:
     def send(self, buffer):
         print "Sending data..."
         global socketBox
-        encryptionFiller = 0
         if self.encryption:
-            nonce = nacl.utils.random(Box.NONCE_SIZE)               # Create the nonce
-            encryptedBuffer = socketBox.encrypt(buffer,nonce)       # Encrypt the payload
-            h = header(len(encryptedBuffer)-40, 0x0, self.startSeqNo, 0x1)
-            h.data += encryptedBuffer                               # Concatenate the buffer to the header data
+            nonce = nacl.utils.random(Box.NONCE_SIZE)  # Create the nonce
+            encryptedBuffer = socketBox.encrypt(buffer, nonce)  # Encrypt the payload
+            h = header(len(encryptedBuffer) - 40, 0x0, self.startSeqNo, 0x1)
+            h.data += encryptedBuffer  # Concatenate the buffer to the header data
         else:
             h = header(len(buffer), 0x0, self.startSeqNo, 0x0)  # tab this back in later
             h.data += buffer  # Our packet is simply the header data with the payload concatenated to it
 
         # print "\tPayload set: seq_no", self.startSeqNo
-        udpSocket.sendto(h.data, self.partnerAddress)   # h.data is our actual packet.
+        udpSocket.sendto(h.data, self.partnerAddress)  # h.data is our actual packet.
         # It's just the header with the buffer added on
         # print "\tPayload sent"
 
@@ -244,10 +247,10 @@ class socket:
             # Waiting on Ack for packet we just sent
             try:
                 udpSocket.settimeout(0.2)
-                data, addr = udpSocket.recvfrom(8272)
+                data, addr = udpSocket.recvfrom(8272)   # This can stay the same
                 headerDat = struct.unpack(sock352PktHdrData, data)  # receive the incoming header data from the client
-                print "\tACK received:", headerDat[9]               # check the SYN flag in the header
-                while headerDat[9] != self.startSeqNo:              # If we get back an incorrect ack
+                print "\tACK received:", headerDat[9]  # check the SYN flag in the header
+                while headerDat[9] != self.startSeqNo:  # If we get back an incorrect ack
                     print "Bad ACK received"
                     udpSocket.sendto(h.data, self.partnerAddress)  # Resend the packet and let the loop go again
                     data, addr = udpSocket.recvfrom(8272)
@@ -279,13 +282,13 @@ class socket:
             newpacket = self.getPacket()
         while newpacket is None:  # While get packet keeps returning None, keep waiting for new packets.
             # Client will always send new ones
-                newpacket = self.getPacket()  # got a bad packet, trying to get a new one
+            newpacket = self.getPacket()  # got a bad packet, trying to get a new one
         print "Packet Received"
         self.nextSeqNo += 1
         # print "Payload size is:", newpacket.packetHeader[11], "nybytes is:", nbytes
-        if newpacket.packetHeader[2] == 0x1:    # If the packet was encrypted we decrypt it here
+        if newpacket.packetHeader[2] == 0x1:  # If the packet was encrypted we decrypt it here
             bytesreceived = socketBox.decrypt(newpacket.payload)
-        else:       # It's a regular packet
+        else:  # It's a regular packet
             bytesreceived = newpacket.payload
 
         return bytesreceived
@@ -294,16 +297,16 @@ class socket:
         print "Waiting for incoming packets..."
 
         # This method will act as an abstraction layer for retrieving a packet from the sender
-        packetData, addr = udpSocket.recvfrom(8272)      # Get the packet data
+        packetData, addr = udpSocket.recvfrom(8272)  # Get the packet data
         rawheader = packetData[0:40]  # Isolate the header
         receivedheader = struct.unpack(sock352PktHdrData, rawheader)  # Unpack the header
         opt_flag = 0x0
 
         # print "PAYLOAD SIZE", receivedheader[11]
-        if self.encryption:         # If the connection is encrypted then we set the flag
+        if self.encryption:  # If the connection is encrypted then we set the flag
             opt_flag = 0x1
 
-        if receivedheader[1] == SOCK352_SYN:             # If we receive a SYN flag
+        if receivedheader[1] == SOCK352_SYN:  # If we receive a SYN flag
             if self.startSeqNo is None:
                 self.startSeqNo = random.randint(0, 64)  # Create the new sequence_no
             if self.connected is True:
@@ -323,7 +326,7 @@ class socket:
                 print "\tSent. Now receiving ACK C"
                 udpSocket.settimeout(0.2)
                 packetData, addr = udpSocket.recvfrom(8272)
-                rawheader = packetData[0:40]                                  # Isolate the header
+                rawheader = packetData[0:40]  # Isolate the header
                 receivedheader = struct.unpack(sock352PktHdrData, rawheader)  # Unpack the header
 
                 if receivedheader[8] == self.currentAck and receivedheader[9] == self.startSeqNo + 1:
@@ -347,15 +350,16 @@ class socket:
             udpSocket.sendto(ackHeader.data, self.partnerAddress)
             return None
 
-        elif receivedheader[1] == 0x0:          # Regular data packet
+        elif receivedheader[1] == 0x0:  # Regular data packet
             print "\tRegular data packet"
-            p = packet()                        # Create the new blank packet object
-            p.packetHeader = receivedheader     # Set the packet header to the unpacked data we received
+            p = packet()  # Create the new blank packet object
+            p.packetHeader = receivedheader  # Set the packet header to the unpacked data we received
 
-            p.payload = packetData[40:]                     # Set the payload to the raw data minus the header data
-            h = header(0, SOCK352_ACK, self.startSeqNo, opt_flag)     # Create a new header of payload zero as our acknowledgment
-            h.setack_no(receivedheader[8])                  # The acknowledgement number is the sequence number we got
-            udpSocket.sendto(h.data, self.partnerAddress)   # Send over the acknowledgement
+            p.payload = packetData[40:]  # Set the payload to the raw data minus the header data
+            h = header(0, SOCK352_ACK, self.startSeqNo,
+                       opt_flag)  # Create a new header of payload zero as our acknowledgment
+            h.setack_no(receivedheader[8])  # The acknowledgement number is the sequence number we got
+            udpSocket.sendto(h.data, self.partnerAddress)  # Send over the acknowledgement
             print "\tSent acknowledgement for packet no:", receivedheader[8]
             print "Received packet payload size:", receivedheader[11]
             return p
@@ -364,6 +368,7 @@ class socket:
             return None  # Returning None will trigger a repeated method call in recv()
 
         pass
+
 
 def readKeyChain(filename):
     global publicKeysHex
@@ -405,6 +410,7 @@ def readKeyChain(filename):
         print ("error: No filename presented")
 
     return (publicKeys, privateKeys)
+
 
 # Class header to organize the code and have an object that can easily be created with the parameters we need
 class header:
@@ -449,6 +455,9 @@ class header:
         self.opt_ptr = number
         self.repack()
 
+    def set_window(self, number):
+        self.window = number
+        self.repack()
 
 
 # Packet class used mainly in getPacket() method
