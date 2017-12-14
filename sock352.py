@@ -26,6 +26,8 @@ global privateKeysHex
 global publicKeys
 global privateKeys
 
+MAX_WINDOW_SIZE = 32000
+
 # the encryption flag
 global ENCRYPT
 
@@ -45,10 +47,9 @@ privateKeysHex = {}
 publicKeys = {}
 privateKeys = {}
 
-
-
 # this is 0xEC
 ENCRYPT = 236
+globalbuff = ""
 
 # FLAGS
 SOCK352_SYN = 0x01
@@ -270,6 +271,7 @@ class socket:
 
     def recv(self, nbytes):
         print "Receiving data..."
+        print "Trying to receive:", nbytes
         global socketBox
         newpacket = self.getPacket()  # go poll for new packets and return them
         while (newpacket is not None) and newpacket.packetHeader[8] != self.nextSeqNo:
@@ -355,6 +357,7 @@ class socket:
             h.setack_no(receivedheader[8])                  # The acknowledgement number is the sequence number we got
             udpSocket.sendto(h.data, self.partnerAddress)   # Send over the acknowledgement
             print "\tSent acknowledgement for packet no:", receivedheader[8]
+            print "Received packet payload size:", receivedheader[11]
             return p
         else:
             print "Corrupted packet"
