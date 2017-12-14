@@ -84,7 +84,7 @@ def main():
     start_stamp = time.clock()    
     while (bytes_to_send > 0):
         size = random.randrange(MINFRAGMENTSIZE,MAXFRAGMENTSIZE)        
-        fragment = fd.read(33000)
+        fragment = fd.read(size)
         mdhash.update(fragment)
         totalsent = 0
         # make sure we sent the whole fragment 

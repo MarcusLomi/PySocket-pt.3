@@ -395,9 +395,10 @@ class socket:
 
             if receivedheader[2] == 0x1:  # If the packet was encrypted we decrypt it here
                 globalbuff += socketBox.decrypt(p.payload)
+                currentWindow -= len(socketBox.decrypt(p.payload))  # get the new window size
             else:
                 globalbuff += p.payload             # put the payload in the buffer
-            currentWindow -= len(p.payload)     # get the new window size
+                currentWindow -= len(p.payload)     # get the new window size
             h.set_window(currentWindow)         # set the new window
             print"SENDING WINDOW OF",currentWindow
             udpSocket.sendto(h.data, self.partnerAddress)  # Send over the acknowledgement
